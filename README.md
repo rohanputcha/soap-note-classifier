@@ -1,4 +1,10 @@
 # soap-note-classifier
 
-# Current goals:
-- Focus on auto-fail criteria: Medicare 8-minute rule, Incorrect billing, not specifying treatment frequency and duration, wildly different treatment vs diagnosis, a note that is not signed, not identifying relevant pt info (name, DOB)
+# Current goal:
+- Focus on auto-fail criteria:
+  - Medicare 8-minute rule
+  - Incorrect billing
+  - Not specifying treatment frequency and duration
+  - Wildly different treatment vs diagnosis
+  - A note that is not signed
+  - Not identifying relevant pt info (name, DOB)
