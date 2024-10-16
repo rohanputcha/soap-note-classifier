@@ -12,7 +12,10 @@ def recognize_text_handler(request, error):
         results.append([recognized_text.string(), recognized_text.confidence()])
     for result in results:
         print(result)
-    # TODO Process the recognized strings.
+    # write results to file
+    with open("output_text.txt", "w") as f:
+        for result in results:
+            f.write(result[0] + "\n")
 
 img_path = "pdf_images/page_1.png"
 
@@ -30,3 +33,4 @@ request = Vision.VNRecognizeTextRequest.alloc().initWithCompletionHandler_(recog
 
 # Perform the text-recognition request.
 error = request_handler.performRequests_error_([request], None)
+

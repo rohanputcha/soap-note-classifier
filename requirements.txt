@@ -3,4 +3,4 @@ Pillow
 numpy<2
 easyocr
 pyobjc-framework-Vision
-Quartz
+pyobjc-framework-Quartz
