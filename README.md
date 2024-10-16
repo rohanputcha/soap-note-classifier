@@ -1,6 +1,6 @@
 # soap-note-classifier
 
-# Current goal:
+# Current goal
 
 - Focus on auto-fail criteria:
   - Medicare 8-minute rule
