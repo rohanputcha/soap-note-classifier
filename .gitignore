@@ -400,3 +400,7 @@ FodyWeavers.xsd
 *.DS_Store
 
 /build
+
+env/
+output_text.txt
+pdf_images/
