@@ -19,5 +19,5 @@ python3 -m venv env
 source env/bin/activate
 pip install -r requirements.txt
 python3 extractPdf.py
-python3 extractPdf.py2
+python3 extractPdf2.py
 ```
