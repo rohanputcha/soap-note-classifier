@@ -20,5 +20,5 @@ source env/bin/activate
 pip install -r requirements.txt
 python3 extractPdf.py
 python3 extractPdf2.py
-python3 pdfParser.py
+python3 autofileParser.py
 ```
