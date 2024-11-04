@@ -1,35 +1,22 @@
-import requests
-import torch
-from PIL import Image
-from transformers import MllamaForConditionalGeneration, AutoProcessor
+import google.generativeai as genai
+import config
 
-model_id = "meta-llama/Llama-3.2-11B-Vision-Instruct"
+def check_name(text):
+    prompt = "This text is a physical therapy note, return 1 if there is a human name detected, return 0 otherwise. Text is as follows: " + text
+    response = model.generate_content(prompt).text.split()[0]
 
-model = MllamaForConditionalGeneration.from_pretrained(
-    model_id,
-    torch_dtype=torch.float32,
-    device_map="auto",
-)
-processor = AutoProcessor.from_pretrained(model_id)
-    
-image = Image.open("./pdf_images/page_1.png").convert("RGB")
-messages = [
-    {"role": "user", "content": [
-        {"type": "image"},
-        {"type": "text", "text": "Describe this image in two sentences"}
-    ]}
-]
+    if (response == '1'):
+        return True
+    elif (response == '0'):
+        return False
+    else:
+        print("Error in parsing the LLM response to either 1 or 0")
+        return False
 
-input_text = processor.apply_chat_template(messages, add_generation_prompt=True)
-inputs = processor(
-    image,
-    input_text,
-    return_tensors="pt"
-).to(model.device)
+def check_soap_note_llm(text):
+    return check_name(text)
 
-# print(inputs['input_ids'])
-
-output = model.generate(**inputs, max_new_tokens=512)
-print(processor.decode(output[0]))
-
-
+soap_note_text = open("output_text.txt", "r").read()
+genai.configure(api_key=config.API_KEY)
+model = genai.GenerativeModel("gemini-1.5-flash")
+print(check_soap_note_llm(soap_note_text))

@@ -12,7 +12,14 @@
 
 # Setup
 
-Run the following code to set up:
+1. Make a ```config.py``` file, and enter this field:
+
+```API_KEY="<YOUR OWN API KEY>"```
+
+Replace <YOUR API KEY> with the actual Gemini API key
+
+
+2. Run the following code to set up:
 
 ```
 python3 -m venv env
@@ -21,4 +28,5 @@ pip install -r requirements.txt
 python3 extractPdf.py
 python3 extractPdf2.py
 python3 autofailParser.py
+python3 llmParser.py
 ```
