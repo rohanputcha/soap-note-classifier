@@ -1,5 +1,15 @@
 import re
 
+def extract_objective_section(text):
+    """
+    Extract all text from the Objective section up to the Assessment section,
+    or from Exercises/Activities up to the next SOAP section.
+    """
+    objective_match = re.search(r'(Objective|Exercises/Activities)\s*[:\-]?\s*(.*?)(?=(Subjective|Assessment|Plan|$))', text, re.IGNORECASE | re.DOTALL)
+    if objective_match:
+        return objective_match.group(2).strip()
+    return ""
+
 def extract_time(text):
     """
     Extract all time entries (in minutes) from the text.
@@ -12,25 +22,24 @@ def check_medicare_8_minute_rule(text):
     """
     Check if the total time in the Objective section exceeds 8 minutes.
     """
-    total_time = extract_time(text)
+    objective_text = extract_objective_section(text)
+    total_time = extract_time(objective_text)
     if total_time < 8:
         return False  # Reject if total time is less than 8 minutes
     return True
 
 def check_incorrect_billing(text):
     """
-    Check for common billing codes and ensure they seem logical.
-    You could refine this by looking for inconsistencies in CPT codes or 'units' logic.
+    Check for common billing codes and ensure they seem logical within the Objective section.
     """
-    billing_matches = re.findall(r'(CPT\s*code|units|billing|charged)', text, re.IGNORECASE)
+    objective_text = extract_objective_section(text)
+    billing_matches = re.findall(r'(CPT\s*code|units|billing|charged)', objective_text, re.IGNORECASE)
     
     if not billing_matches:
-        return False  # If no billing information is provided, it's an issue.
+        return False  # If no billing information is provided in the Objective section, it's an issue.
 
-    # Further validation logic could go here, for now, we assume if billing exists, it's valid
+    # Further validation logic could go here; for now, we assume if billing exists, it's valid.
     return True
-
-import re
 
 def check_treatment_frequency_and_duration(text):
     frequency_patterns = [
@@ -70,7 +79,7 @@ def check_soap_note(text):
         return "Rejected: Medicare 8-minute rule not followed (total time less than 8 minutes)."
     
     if not check_incorrect_billing(text):
-        return "Rejected: Incorrect billing detected."
+        return "Rejected: Missing or incorrect billing detected."
     
     if not check_treatment_frequency_and_duration(text):
         return "Rejected: Missing or incorrect treatment frequency/duration."
@@ -83,5 +92,5 @@ def check_soap_note(text):
     
     return "Accepted: All checks passed."
 
-soap_note_text = open("output_text.txt", "r").read()
+soap_note_text = open("note10text.txt", "r").read()
 print(check_soap_note(soap_note_text))
