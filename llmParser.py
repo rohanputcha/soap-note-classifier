@@ -2,7 +2,7 @@ import google.generativeai as genai
 import config
 
 def check_name(text):
-    prompt = "This text is a physical therapy note, return 1 if there is a human name detected, return 0 otherwise. Text is as follows: " + text
+    prompt = "This text is a physical therapy note, return 1 if there is a human name detected right before the DOB, return 0 otherwise. Text is as follows: " + text
     response = model.generate_content(prompt).text.split()[0]
 
     if (response == '1'):
@@ -10,6 +10,7 @@ def check_name(text):
     elif (response == '0'):
         return False
     else:
+        print(response)
         print("Error in parsing the LLM response to either 1 or 0")
         return False
 
