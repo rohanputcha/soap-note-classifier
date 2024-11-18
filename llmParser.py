@@ -21,7 +21,7 @@ def check_rubric(text):
     history=[
         {"role": "user", "parts": "This text is extracted from a physical therapy note, help me assess it against multiple rubric items. Here's the text: " + text},
         {"role": "model", "parts": "I got the text, what are the rubric items and how do I respond?"},
-        {"role": "user", "parts": "Each rubric item has multiple subitems and corresponding points. Assess the text based on the subitems and give them points, add up the points and tell me the final points for the entire rubric item. Output the final point only as an integer"},
+        {"role": "user", "parts": "Each rubric item has multiple subitems and corresponding points. The grading scale is: full points for Correctly Documented, half points for Errors in Documentation, and no point for Not documented. Assess the text based on the subitems, and give them points based on the grading scale. Add up the points and tell me the final points for the entire rubric item. Output the final point only as an integer"},
         {"role": "model", "parts": "Got it! Now show me the rubric items one by one, and I will give you the point as an integer for each item."},
         ]
     )
