@@ -16,7 +16,7 @@ def pdf_to_images(pdf_path, output_folder='pdf_images'):
         pix = page.get_pixmap(dpi=300)  # High resolution for OCR
 
         # Save the image as PNG
-        image_path = os.path.join(output_folder, f"page_{page_num + 1}.png")
+        image_path = os.path.join(output_folder, f"sample_pdf_images/page_{page_num + 1}.png")
         pix.save(image_path)
         image_paths.append(image_path)
 
@@ -27,5 +27,5 @@ def extract_text_from_pdf(pdf_path):
     """Extracts text from all pages of a PDF using OCR."""
     image_paths = pdf_to_images(pdf_path)
 
-pdf_path = "data/pt20.pdf"
+pdf_path = "data/sample_soap_note.pdf"
 extract_text_from_pdf(pdf_path)
