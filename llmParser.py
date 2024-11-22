@@ -22,15 +22,17 @@ def check_rubric(text):
     history=[
         {"role": "user", "parts": "This text is extracted from a physical therapy note, help me assess it against multiple rubric items. Here's the text: " + text},
         {"role": "model", "parts": "I got the text, what are the rubric items and how do I respond?"},
-        {"role": "user", "parts": "Each rubric item has multiple subitems and corresponding points. The grading scale is: full points for Correctly Documented, half points for Errors in Documentation, and no point for Not documented. Assess the text based on the subitems, and give them points based on the grading scale. Add up the points to get the final points for the entire rubric item. Your final output should be in this format: final integer points, brief reason. For example: '2, name is not included'"},
+        {"role": "user", "parts": "Each rubric item has multiple subitems and corresponding points. The grading scale is: full points for Correctly Documented, half points for Errors in Documentation, and no point for Not documented. Assess the text based on the subitems, and give them points based on the grading scale. Add up the points to get the final points for the entire rubric item. Make sure that your final output should be in this format: full final points, brief reason. For example: '2, name is not included'"},
         {"role": "model", "parts": "Got it! Now show me the rubric items one by one, and I will return the point as an integer for each item."},
         ]
     )
     # DEMOGRAPHICS (4 points)
     response = chat.send_message("Rubric item: demographics, 4 points in total. 2 points for complete patient identification (Age, Birthdate, Gender, Employment), and 2 points for complete referral mechanism.")
-    print(response.text)
-    # total_pts += int(response.text)
-    # print(response.text + " points for DEMOGRAPHICS")
+    # print(response.text)
+    point, reason = response.text.split(", ", 1)
+    total_pts += int(point)
+    print("DEMOGRAPHIC final point: " + str(point))
+    print("DEMOGRAPHIC reason for deduction: " + reason)
 
     # HISTORY (10 points)
     response = chat.send_message("Rubric item: history, 10 points in total. - Past Medical and Surgical history: 1 point" +  
@@ -42,8 +44,10 @@ def check_rubric(text):
         "- History of falls: 1 point  " +  
         "- Patient’s goals for therapy: 2 points ")
     # print(response.text)
-    # total_pts += int(response.text)
-    # print(response.text + " points for HISTORY")
+    point, reason = response.text.split(", ", 1)
+    total_pts += int(point)
+    print("HISTORY final point: " + str(point))
+    print("HISTORY reason for deduction: " + reason)
 
     # other items can follow similar format
     # response = chat.send_message("")
