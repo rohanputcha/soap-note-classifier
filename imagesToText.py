@@ -51,7 +51,7 @@ def write_results_to_file(output_file):
 
 
 # Folder containing the images and output file path
-image_folder = "pdf_images"
+image_folder = "pdf_images/sample_pdf_images"
 output_text_file = "output_text.txt"
 
 # Process all images in the folder

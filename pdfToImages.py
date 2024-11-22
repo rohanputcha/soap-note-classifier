@@ -23,9 +23,5 @@ def pdf_to_images(pdf_path, output_folder='pdf_images'):
     pdf_document.close()
     return image_paths
 
-def extract_text_from_pdf(pdf_path):
-    """Extracts text from all pages of a PDF using OCR."""
-    image_paths = pdf_to_images(pdf_path)
-
 pdf_path = "data/sample_soap_note.pdf"
-extract_text_from_pdf(pdf_path)
+pdf_to_images(pdf_path)
