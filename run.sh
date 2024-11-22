@@ -4,6 +4,6 @@
 ./clear.sh
 
 # Run the Python scripts sequentially
-python extractPdf.py
-python extractPdf2.py
+python pdfToImages.py
+python imagesToText.py
 python llmParser.py
