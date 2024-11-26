@@ -1,5 +1,7 @@
 import google.generativeai as genai
 import config
+import re
+import grpc
 
 def check_name(text):
     prompt = "This text is a physical therapy note, return 1 if there is a human name detected right before the DOB, return 0 otherwise. Text is as follows: " + text
@@ -26,14 +28,25 @@ def check_rubric(text):
         {"role": "model", "parts": "Got it! Now show me the rubric items one by one, and I will return the point as an integer for each item."},
         ]
     )
-    # DEMOGRAPHICS (4 points)
-    response = chat.send_message("Rubric item: demographics, 4 points in total. 2 points for complete patient identification (Age, Birthdate, Gender, Employment), and 2 points for complete referral mechanism.")
-    # print(response.text)
-    point, reason = response.text.split(", ", 1)
-    total_pts += int(point)
-    print("DEMOGRAPHIC final point: " + str(point))
-    print("DEMOGRAPHIC reason for deduction: " + reason)
+    
+    response = chat.send_message("Rubric item: demographics, 4 points in total. 2 points for complete patient identification (Age, Birthdate, Gender, Employment), and 2 points for complete referral mechanism. Return the number of points earned, with a maximum of 4, followed by a comma to delimit.")
 
+    # DEMOGRAPHICS (4 points)
+    split_parts = re.split(r", |\. ", response.text, maxsplit=1)
+    if len(split_parts) == 2:
+        # Check if the point is a fraction
+        point_str = split_parts[0].strip()
+        if "/" in point_str:  # Handle fractional points
+            numerator, denominator = map(int, point_str.split("/"))
+            point = numerator
+        else:
+            point = int(point_str)  # Handle whole numbers
+        reason = split_parts[1].strip()  # Remove leading/trailing spaces
+        total_pts += int(point)
+        print(f"Demographic section final points: {point}")
+        print(f"Reason for deduction: {reason}")
+    else:
+        print("Error processing Demographic section.")
     # HISTORY (10 points)
     response = chat.send_message("Rubric item: history, 10 points in total. - Past Medical and Surgical history: 1 point" +  
         "- Social history/Home set-up (e.g., Alcohol and Tobacco use, cultural concerns, hobbies): 1 point  " +  
@@ -42,28 +55,35 @@ def check_rubric(text):
         "- Medications/Allergies: 1 point  " +  
         "- Diagnostic Imaging/Pertinent lab values: 1 point  " +  
         "- History of falls: 1 point  " +  
-        "- Patient’s goals for therapy: 2 points ")
+        "- Patient’s goals for therapy: 2 points. Return the number of points earned, with a maximum of 4, followed by a comma to delimit.")
     # print(response.text)
-    point, reason = response.text.split(", ", 1)
-    total_pts += int(point)
-    print("HISTORY final point: " + str(point))
-    print("HISTORY reason for deduction: " + reason)
+    split_parts = re.split(r", |\. ", response.text, maxsplit=1)
+    if len(split_parts) == 2:
+        # Check if the point is a fraction
+        point_str = split_parts[0].strip()
+        if "/" in point_str:  # Handle fractional points
+            numerator, denominator = map(int, point_str.split("/"))
+            point = numerator
+        else:
+            point = int(point_str)  # Handle whole numbers
+        reason = split_parts[1].strip()  # Remove leading/trailing spaces
+        total_pts += int(point)
+        print(f"History section final points: {point}")
+        print(f"Reason for deduction: {reason}")
+    else:
+        print("Error processing History section.")
 
-    # other items can follow similar format
-    # response = chat.send_message("")
-    # print(int(response.text))
-
-    print("check rubric completed")
+    print("Completed rubric checking.")
 
     # dummy threshold
     if (total_pts < 60): return False
     return True
 
 def check_soap_note_llm(text):
-    # check_rubric(text)
     return check_name(text) and check_rubric(text)
-
+    
 soap_note_text = open("output_text.txt", "r").read()
 genai.configure(api_key=config.API_KEY)
 model = genai.GenerativeModel("gemini-1.5-flash")
-print(check_soap_note_llm(soap_note_text))
+result = check_soap_note_llm(soap_note_text)
+print("Assessment: ", "Skilled" if result else "Unskilled")
