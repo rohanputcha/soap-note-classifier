@@ -1,5 +1,6 @@
-import fitz  # PyMuPDF
+import fitz
 import os
+import config
 from io import BytesIO
 
 def pdf_to_images(pdf_path, output_folder='pdf_images'):
@@ -23,5 +24,5 @@ def pdf_to_images(pdf_path, output_folder='pdf_images'):
     pdf_document.close()
     return image_paths
 
-pdf_path = "data/sample_soap_note.pdf"
+pdf_path = config.SOAP_NOTE_PATH
 pdf_to_images(pdf_path)

@@ -4,6 +4,6 @@
 ./clear.sh
 
 # Run the Python scripts sequentially
-python pdfToImages.py
-python imagesToText.py
-python llmParser.py
+python3 pdfToImages.py
+python3 imagesToText.py
+python3 llmParser.py

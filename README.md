@@ -1,32 +1,27 @@
-# soap-note-classifier
-
-# Current goal
-
-- Focus on auto-fail criteria:
-  - Medicare 8-minute rule
-  - Incorrect billing
-  - Not specifying treatment frequency and duration
-  - Wildly different treatment vs diagnosis
-  - A note that is not signed
-  - Not identifying relevant pt info (name, DOB)
-
 # Setup
+1. Add your SOAP note to the project directory.
 
-1. Make a ```config.py``` file, and enter this field:
+2. Make a ```config.py``` file, and enter the following fields:
 
 ```API_KEY="<YOUR OWN API KEY>"```
 
 Replace <YOUR API KEY> with the actual Gemini API key
 
+```SOAP_NOTE_PATH="<PATH TO SOAP NOTE>"```
 
-2. Run the following code to set up:
+Replace <PATH TO SOAP NOTE> with your actual path to the SOAP you want to check. 
+In most IDEs, if you drag the file from the explorer to your terminal you will see the file's absolute path. Only include the path after ```soap-note-classifier/```.
+
+3. Run the following commands to set up:
 
 ```
 python3 -m venv env
 source env/bin/activate
 pip install -r requirements.txt
-python3 extractPdf.py
-python3 extractPdf2.py
-python3 autofailParser.py
-python3 llmParser.py
+```
+
+4. Run the following command to execute the evaluator:
+
+```
+bash ./run.sh
 ```
