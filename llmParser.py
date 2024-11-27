@@ -1,7 +1,7 @@
 import google.generativeai as genai
 import config
 import re
-import grpc
+import sys
 
 def check_name(text):
     prompt = "This text is a physical therapy note, return 1 if there is a human name detected right before the DOB, return 0 otherwise. Text is as follows: " + text
@@ -41,9 +41,14 @@ def check_rubric(text):
             point = numerator
         else:
             point = int(point_str)  # Handle whole numbers
+            
+        print(f"Demographic section points: {point}")
+        if point < config.THRESHOLD * 4:
+            print("Demographic section points fell below threshold.")
+            print("Assessment: Unskilled")
+            sys.exit(0)
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
-        print(f"Demographic section final points: {point}")
         print(f"Reason for deduction: {reason}")
     else:
         print("Error processing Demographic section.")
@@ -55,7 +60,7 @@ def check_rubric(text):
         "- Medications/Allergies: 1 point  " +  
         "- Diagnostic Imaging/Pertinent lab values: 1 point  " +  
         "- History of falls: 1 point  " +  
-        "- Patient’s goals for therapy: 2 points. Return the number of points earned, with a maximum of 4, followed by a comma to delimit.")
+        "- Patient’s goals for therapy: 2 points. Return the number of points earned, with a maximum of 10, followed by a comma to delimit.")
     # print(response.text)
     split_parts = re.split(r", |\. ", response.text, maxsplit=1)
     if len(split_parts) == 2:
@@ -66,17 +71,21 @@ def check_rubric(text):
             point = numerator
         else:
             point = int(point_str)  # Handle whole numbers
+            
+        print(f"History section points: {point}")
+        if point < config.THRESHOLD * 10:
+            print("Demographic section points fell below threshold.")
+            print("Assessment: Unskilled")
+            sys.exit(0)
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
-        print(f"History section final points: {point}")
         print(f"Reason for deduction: {reason}")
     else:
         print("Error processing History section.")
 
     print("Completed rubric checking.")
 
-    # dummy threshold
-    if (total_pts < 60): return False
+    if (float(total_pts)/14 < config.THRESHOLD): return False
     return True
 
 def check_soap_note_llm(text):

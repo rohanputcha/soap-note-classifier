@@ -1,4 +1,6 @@
 import re
+import config
+import sys
 
 def extract_objective_section(text):
     """
@@ -76,21 +78,27 @@ def check_patient_info(text):
 
 def check_soap_note(text):
     if not check_medicare_8_minute_rule(text):
-        return "Rejected: Medicare 8-minute rule not followed (total time less than 8 minutes)."
+        print("Rejected: Medicare 8-minute rule not followed (total time less than 8 minutes).")
+        sys.exit(1)
     
     if not check_incorrect_billing(text):
-        return "Rejected: Missing or incorrect billing detected."
+        print("Rejected: Missing or incorrect billing detected.")
+        sys.exit(1)
     
     if not check_treatment_frequency_and_duration(text):
-        return "Rejected: Missing or incorrect treatment frequency/duration."
+        print("Rejected: Missing or incorrect treatment frequency/duration.")
+        sys.exit(1)
     
     if not check_signed(text):
-        return "Rejected: Note is not signed."
+        print("Rejected: Note is not signed.")
+        sys.exit(1)
     
     if not check_patient_info(text):
-        return "Rejected: Missing patient information (name, DOB)."
+        print("Rejected: Missing patient information (name, DOB).")
+        sys.exit(1)
     
-    return "Accepted: All checks passed."
+    print("Accepted: All checks passed.")
+    sys.exit(0)
 
-soap_note_text = open("note10text.txt", "r").read()
-print(check_soap_note(soap_note_text))
+soap_note_text = open("output_text.txt", "r").read()
+check_soap_note(soap_note_text)

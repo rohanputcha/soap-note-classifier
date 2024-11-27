@@ -12,6 +12,10 @@ Replace <YOUR API KEY> with the actual Gemini API key
 Replace <PATH TO SOAP NOTE> with your actual path to the SOAP you want to check. 
 In most IDEs, if you drag the file from the explorer to your terminal you will see the file's absolute path. Only include the path after ```soap-note-classifier/```.
 
+```THRESHOLD="<YOUR THRESHOLD>"```
+
+Replace <YOUR THRESHOLD> with a decimal from 0 to 1 for the minimum fraction of rubric points per section of a skilled SOAP note.
+
 3. Run the following commands to set up:
 
 ```
