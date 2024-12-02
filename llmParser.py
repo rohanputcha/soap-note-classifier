@@ -4,8 +4,9 @@ import re
 import sys
 
 def check_name(text):
-    prompt = "This text is a physical therapy note, return 1 if there is a human name detected right before the DOB, return 0 otherwise. Text is as follows: " + text
+    prompt = "This text is a physical therapy note, return 1 if there is a human name detected only right top above DOB in the title, ignore any name in the main content, return 0 otherwise. Text is as follows: " + text
     response = model.generate_content(prompt).text.split()[0]
+    print(response)
 
     if (response == '1'):
         print("A name is detected, autofail pass!")
