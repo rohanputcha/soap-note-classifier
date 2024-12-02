@@ -51,7 +51,8 @@ def check_rubric(text):
             sys.exit(0)
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
-        print(f"Reason for deduction: {reason}")
+        if point < 4:
+            print(f"Reason for deduction: {reason}")
         print("-" * 100)
     else:
         print("Error processing Demographic section.")
@@ -85,7 +86,8 @@ def check_rubric(text):
             sys.exit(0)
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
-        print(f"Reason for deduction: {reason}")
+        if point < 10:
+            print(f"Reason for deduction: {reason}")
         print("-" * 100)
     else:
         print("Error processing History section.")
@@ -117,7 +119,8 @@ def check_rubric(text):
             sys.exit(0)
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
-        print(f"Reason for deduction: {reason}")
+        if point < 10:
+            print(f"Reason for deduction: {reason}")
         print("-" * 100)
     else:
         print("Error processing System Review section.")
@@ -148,7 +151,8 @@ def check_rubric(text):
             sys.exit(0)
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
-        print(f"Reason for deduction: {reason}")
+        if point < 10:
+            print(f"Reason for deduction: {reason}")
         print("-" * 100)
     else:
         print("Error processing Evaluation and PT Diagnosis section.")
@@ -178,7 +182,8 @@ def check_rubric(text):
             sys.exit(0)
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
-        print(f"Reason for deduction: {reason}")
+        if point < 10:
+            print(f"Reason for deduction: {reason}")
         print("-" * 100)
     else:
         print("Error processing Prognosis section.")
@@ -209,7 +214,8 @@ def check_rubric(text):
             sys.exit(0)
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
-        print(f"Reason for deduction: {reason}")
+        if point < 12:
+            print(f"Reason for deduction: {reason}")
         print("-" * 100)
     else:
         print("Error processing Goals section.")
@@ -242,7 +248,8 @@ def check_rubric(text):
             sys.exit(0)
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
-        print(f"Reason for deduction: {reason}")
+        if point < 15:
+            print(f"Reason for deduction: {reason}")
         print("-" * 100)
     else:
         print("Error processing Plan of Care section.")
@@ -276,7 +283,8 @@ def check_rubric(text):
             sys.exit(0)
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
-        print(f"Reason for deduction: {reason}")
+        if point < 9:
+            print(f"Reason for deduction: {reason}")
         print("-" * 100)
     else:
         print("Error processing Authentication and Billing section.")
@@ -311,13 +319,14 @@ def check_rubric(text):
             sys.exit(0)
         reason = split_parts[1].strip().replace('*', '')  # Remove leading/trailing spaces
         total_pts += int(point)
-        print(f"Reason for deduction: {reason}")
+        if point < 20:
+            print(f"Reason for deduction: {reason}")
         print("-" * 100)
     else:
         print("Error processing Test and Measures section.")
 
 
-    print("Completed rubric checking. Total point is: " + str(total_pts))
+    print("Completed rubric checking. Total points: " + str(total_pts))
 
     if (float(total_pts)/14 < config.THRESHOLD): return False
     return True
