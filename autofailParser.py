@@ -7,7 +7,7 @@ def extract_objective_section(text):
     Extract all text from the Objective section up to the Assessment section,
     or from Exercises/Activities up to the next SOAP section.
     """
-    objective_match = re.search(r'(Objective|Exercises/Activities)\s*[:\-]?\s*(.*?)(?=(Subjective|Assessment|Plan|$))', text, re.IGNORECASE | re.DOTALL)
+    objective_match = re.search(r'(Objective|Exercises/Activities|Procedures|Gait Training)\s*[:\-]?\s*(.*?)(?=(Subjective|Assessment|Plan|$))', text, re.IGNORECASE | re.DOTALL)
     if objective_match:
         return objective_match.group(2).strip()
     return ""
@@ -34,8 +34,8 @@ def check_incorrect_billing(text):
     """
     Check for common billing codes and ensure they seem logical within the Objective section.
     """
-    objective_text = extract_objective_section(text)
-    billing_matches = re.findall(r'(CPT\s*code|units|billing|charged)', objective_text, re.IGNORECASE)
+    # objective_text = extract_objective_section(text)
+    billing_matches = re.findall(r'(CPT\s*code|units|billing|charged)', text, re.IGNORECASE)
     
     if not billing_matches:
         return False  # If no billing information is provided in the Objective section, it's an issue.
