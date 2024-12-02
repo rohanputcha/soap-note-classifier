@@ -12,6 +12,8 @@ def check_name(text):
         print("-" * 100)
         return True
     elif (response == '0'):
+        print("A name is not detected, autofail fails!")
+        print("-" * 100)
         return False
     else:
         print(response)
@@ -342,7 +344,9 @@ def check_rubric(text):
     return None
 
 def check_soap_note_llm(text):
-    return check_name(text) and check_rubric(text)
+    name = check_name(text)
+    rubric = check_rubric(text)
+    return name and rubric
     
 soap_note_text = open("output_text.txt", "r").read()
 genai.configure(api_key=config.API_KEY)
