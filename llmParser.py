@@ -9,6 +9,7 @@ def check_name(text):
 
     if (response == '1'):
         print("A name is detected, autofail pass!")
+        print("-" * 100)
         return True
     elif (response == '0'):
         return False
@@ -43,6 +44,7 @@ def check_rubric(text):
             point = int(point_str)  # Handle whole numbers
             
         print(f"Demographic section points: {point}")
+        print("-" * 50)
         if point < config.THRESHOLD * 4:
             print("Demographic section points fell below threshold.")
             print("Assessment: Unskilled")
@@ -50,6 +52,7 @@ def check_rubric(text):
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         print(f"Reason for deduction: {reason}")
+        print("-" * 100)
     else:
         print("Error processing Demographic section.")
 
@@ -75,6 +78,7 @@ def check_rubric(text):
             point = int(point_str)  # Handle whole numbers
             
         print(f"History section points: {point}")
+        print("-" * 50)
         if point < config.THRESHOLD * 10:
             print("History section points fell below threshold.")
             print("Assessment: Unskilled")
@@ -82,6 +86,7 @@ def check_rubric(text):
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         print(f"Reason for deduction: {reason}")
+        print("-" * 100)
     else:
         print("Error processing History section.")
 
@@ -105,6 +110,7 @@ def check_rubric(text):
             point = int(point_str)  # Handle whole numbers
             
         print(f"System Review section points: {point}")
+        print("-" * 50)
         if point < config.THRESHOLD * 10:
             print("System Review section points fell below threshold.")
             print("Assessment: Unskilled")
@@ -112,6 +118,7 @@ def check_rubric(text):
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         print(f"Reason for deduction: {reason}")
+        print("-" * 100)
     else:
         print("Error processing System Review section.")
 
@@ -134,6 +141,7 @@ def check_rubric(text):
             point = int(point_str)  # Handle whole numbers
             
         print(f"Evaluation and PT Diagnosis section points: {point}")
+        print("-" * 50)
         if point < config.THRESHOLD * 10:
             print("Evaluation and PT Diagnosis section points fell below threshold.")
             print("Assessment: Unskilled")
@@ -141,6 +149,7 @@ def check_rubric(text):
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         print(f"Reason for deduction: {reason}")
+        print("-" * 100)
     else:
         print("Error processing Evaluation and PT Diagnosis section.")
 
@@ -162,6 +171,7 @@ def check_rubric(text):
             point = int(point_str)  # Handle whole numbers
             
         print(f"Prognosis section points: {point}")
+        print("-" * 50)
         if point < config.THRESHOLD * 10:
             print("Prognosis section points fell below threshold.")
             print("Assessment: Unskilled")
@@ -169,6 +179,7 @@ def check_rubric(text):
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         print(f"Reason for deduction: {reason}")
+        print("-" * 100)
     else:
         print("Error processing Prognosis section.")
 
@@ -191,6 +202,7 @@ def check_rubric(text):
             point = int(point_str)  # Handle whole numbers
             
         print(f"Goals section points: {point}")
+        print("-" * 50)
         if point < config.THRESHOLD * 10:
             print("Goals section points fell below threshold.")
             print("Assessment: Unskilled")
@@ -198,6 +210,7 @@ def check_rubric(text):
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         print(f"Reason for deduction: {reason}")
+        print("-" * 100)
     else:
         print("Error processing Goals section.")
 
@@ -222,6 +235,7 @@ def check_rubric(text):
             point = int(point_str)  # Handle whole numbers
             
         print(f"Plan of Care section points: {point}")
+        print("-" * 50)
         if point < config.THRESHOLD * 10:
             print("Plan of Care section points fell below threshold.")
             print("Assessment: Unskilled")
@@ -229,6 +243,7 @@ def check_rubric(text):
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         print(f"Reason for deduction: {reason}")
+        print("-" * 100)
     else:
         print("Error processing Plan of Care section.")
 
@@ -254,6 +269,7 @@ def check_rubric(text):
             point = int(point_str)  # Handle whole numbers
             
         print(f"Authentication and Billing section points: {point}")
+        print("-" * 50)
         if point < config.THRESHOLD * 10:
             print("Authentication and Billing section points fell below threshold.")
             print("Assessment: Unskilled")
@@ -261,12 +277,13 @@ def check_rubric(text):
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         print(f"Reason for deduction: {reason}")
+        print("-" * 100)
     else:
         print("Error processing Authentication and Billing section.")
 
     
     # TEST AND MEASURES (20 points)
-    response = chat.send_message("Rubric item: Test and Measures, 20 points. For each performed outcome measure only, assess how good it is documented. The total point is 20, give me the final point. Measure list: " +
+    response = chat.send_message("Rubric item: Test and Measures, 20 points. For each performed outcome measure only, assess how good it is documented. The total point is 20. Measure list: " +
         "- Aerobic Capacity; - Anthropometric Characteristics; - Assistive Technology; " +
         "- Balance; - Circulation; - Community, Social, and Civic Life; - Cranial and Peripheral Nerve Integrity; " +
         "- Education; - Life Environmental Factors; - Gait (Quality, assistance, devices, distance); " +
@@ -275,7 +292,7 @@ def check_rubric(text):
         "- Processing; - Pain (Intensity, location, pattern, descriptions, and aggravating or relieving factors); " +
         "- Posture; - Range of Motion; - Reflex Integrity; - Self-Care and Domestic Life; " +
         "- Sensory Integrity; - Skeletal Integrity; - Special tests")
-    print(response.text)
+    # print(response.text)
     split_parts = re.split(r", |\. ", response.text, maxsplit=1)
     if len(split_parts) == 2:
         # Check if the point is a fraction
@@ -287,13 +304,15 @@ def check_rubric(text):
             point = int(point_str)  # Handle whole numbers
             
         print(f"Test and Measures section points: {point}")
+        print("-" * 50)
         if point < config.THRESHOLD * 10:
             print("Test and Measures section points fell below threshold.")
             print("Assessment: Unskilled")
             sys.exit(0)
-        reason = split_parts[1].strip()  # Remove leading/trailing spaces
+        reason = split_parts[1].strip().replace('*', '')  # Remove leading/trailing spaces
         total_pts += int(point)
         print(f"Reason for deduction: {reason}")
+        print("-" * 100)
     else:
         print("Error processing Test and Measures section.")
 
