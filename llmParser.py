@@ -20,12 +20,13 @@ def check_name(text):
 
 def check_rubric(text):
     total_pts = 0
+    unskilled_sections = []
 
     chat = model.start_chat(
     history=[
         {"role": "user", "parts": "This text is extracted from a physical therapy note, help me assess it against multiple rubric items. Here's the text: " + text},
         {"role": "model", "parts": "I got the text, what are the rubric items and how do I respond?"},
-        {"role": "user", "parts": "Each rubric item has multiple subitems and corresponding points. The grading scale is: full points for Correctly Documented, half points for Errors in Documentation, and no point for Not documented. Assess the text based on the subitems, and give them points based on the grading scale. Add up the points to get the final points for the entire rubric item. Make sure that your final output should be in this format: full final points, brief reason. For example: '2, name is not included'"},
+        {"role": "user", "parts": "Each rubric item has multiple subitems and corresponding points. The grading scale is: full points for Correctly Documented, half points for Errors in Documentation, and no point for Not documented. Assess the text based on the subitems, and give them points based on the grading scale. Add up the points to get the final points for the entire rubric item. Make sure that your final output should be in this format: full final points, brief reason. For example: '2, name is not included'. Please only call out obvious flaws -- be otherwise lenient."},
         {"role": "model", "parts": "Got it! Now show me the rubric items one by one, and I will return the point as an integer for each item."},
         ]
     )
@@ -49,6 +50,7 @@ def check_rubric(text):
             print("Demographic section points fell below threshold.")
             print("Assessment: Unskilled")
             # sys.exit(0)
+            unskilled_sections.append("Demographics")
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         if point < 4:
@@ -83,7 +85,8 @@ def check_rubric(text):
         if point < config.THRESHOLD * 10:
             print("History section points fell below threshold.")
             print("Assessment: Unskilled")
-            sys.exit(0)
+            # sys.exit(0)
+            unskilled_sections.append("History")
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         if point < 10:
@@ -117,6 +120,7 @@ def check_rubric(text):
             print("System Review section points fell below threshold.")
             print("Assessment: Unskilled")
             # sys.exit(0)
+            unskilled_sections.append("System Review")
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         if point < 10:
@@ -149,6 +153,7 @@ def check_rubric(text):
             print("Evaluation and PT Diagnosis section points fell below threshold.")
             print("Assessment: Unskilled")
             # sys.exit(0)
+            unskilled_sections.append("Evaluation and PT Diagnosis")
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         if point < 10:
@@ -180,6 +185,7 @@ def check_rubric(text):
             print("Prognosis section points fell below threshold.")
             print("Assessment: Unskilled")
             # sys.exit(0)
+            unskilled_sections.append("Prognosis")
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         if point < 10:
@@ -212,6 +218,7 @@ def check_rubric(text):
             print("Goals section points fell below threshold.")
             print("Assessment: Unskilled")
             # sys.exit(0)
+            unskilled_sections.append("Goals")
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         if point < 12:
@@ -246,6 +253,7 @@ def check_rubric(text):
             print("Plan of Care section points fell below threshold.")
             print("Assessment: Unskilled")
             # sys.exit(0)
+            unskilled_sections.append("Plan of Care")
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         if point < 15:
@@ -281,6 +289,7 @@ def check_rubric(text):
             print("Authentication and Billing section points fell below threshold.")
             print("Assessment: Unskilled")
             # sys.exit(0)
+            unskilled_sections.append("Authentication and Billing")
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         if point < 9:
@@ -317,6 +326,7 @@ def check_rubric(text):
             print("Test and Measures section points fell below threshold.")
             print("Assessment: Unskilled")
             # sys.exit(0)
+            unskilled_sections.append("Test and Measures")
         reason = split_parts[1].strip().replace('*', '')  # Remove leading/trailing spaces
         total_pts += int(point)
         if point < 20:
@@ -328,8 +338,8 @@ def check_rubric(text):
 
     print("Completed rubric checking. Total points: " + str(total_pts))
 
-    if (float(total_pts)/14 < config.THRESHOLD): return False
-    return True
+    if (float(total_pts)/100 < config.THRESHOLD or unskilled_sections): return unskilled_sections
+    return None
 
 def check_soap_note_llm(text):
     return check_name(text) and check_rubric(text)
@@ -338,4 +348,13 @@ soap_note_text = open("output_text.txt", "r").read()
 genai.configure(api_key=config.API_KEY)
 model = genai.GenerativeModel("gemini-1.5-flash")
 result = check_soap_note_llm(soap_note_text)
-print("Assessment: ", "Skilled" if result else "Unskilled")
+
+if result:
+    print("Unskilled sections: ")
+    for section in result:
+        print('  > ' + section)
+    print("Final Assessment: Unskilled")
+    print("-" * 100)
+else:
+    print("Final Assessment: Skilled")
+    print("-" * 100)
