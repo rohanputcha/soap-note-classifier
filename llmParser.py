@@ -346,6 +346,9 @@ def check_rubric(text):
 
 def check_soap_note_llm(text):
     name = check_name(text)
+    if not name:
+        print("Final Assessment: Unskilled")
+        sys.exit(0)
     rubric = check_rubric(text)
     return name and rubric
     

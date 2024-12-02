@@ -25,4 +25,7 @@ def pdf_to_images(pdf_path, output_folder='pdf_images'):
     return image_paths
 
 pdf_path = config.SOAP_NOTE_PATH
+if not os.path.exists(pdf_path):
+    print("Error: The specified PDF file does not exist.")
+    exit(1)
 pdf_to_images(pdf_path)
