@@ -266,7 +266,7 @@ def check_rubric(text):
         print("Error processing Authentication and Billing section.")
 
 
-    print("Completed rubric checking.")
+    print("Completed rubric checking. Total point is: " + str(total_pts))
 
     if (float(total_pts)/14 < config.THRESHOLD): return False
     return True
