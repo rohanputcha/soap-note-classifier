@@ -48,7 +48,7 @@ def check_rubric(text):
         if point < config.THRESHOLD * 4:
             print("Demographic section points fell below threshold.")
             print("Assessment: Unskilled")
-            sys.exit(0)
+            # sys.exit(0)
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         if point < 4:
@@ -116,7 +116,7 @@ def check_rubric(text):
         if point < config.THRESHOLD * 10:
             print("System Review section points fell below threshold.")
             print("Assessment: Unskilled")
-            sys.exit(0)
+            # sys.exit(0)
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         if point < 10:
@@ -148,7 +148,7 @@ def check_rubric(text):
         if point < config.THRESHOLD * 10:
             print("Evaluation and PT Diagnosis section points fell below threshold.")
             print("Assessment: Unskilled")
-            sys.exit(0)
+            # sys.exit(0)
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         if point < 10:
@@ -179,7 +179,7 @@ def check_rubric(text):
         if point < config.THRESHOLD * 10:
             print("Prognosis section points fell below threshold.")
             print("Assessment: Unskilled")
-            sys.exit(0)
+            # sys.exit(0)
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         if point < 10:
@@ -211,7 +211,7 @@ def check_rubric(text):
         if point < config.THRESHOLD * 10:
             print("Goals section points fell below threshold.")
             print("Assessment: Unskilled")
-            sys.exit(0)
+            # sys.exit(0)
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         if point < 12:
@@ -245,7 +245,7 @@ def check_rubric(text):
         if point < config.THRESHOLD * 10:
             print("Plan of Care section points fell below threshold.")
             print("Assessment: Unskilled")
-            sys.exit(0)
+            # sys.exit(0)
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         if point < 15:
@@ -280,7 +280,7 @@ def check_rubric(text):
         if point < config.THRESHOLD * 10:
             print("Authentication and Billing section points fell below threshold.")
             print("Assessment: Unskilled")
-            sys.exit(0)
+            # sys.exit(0)
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
         total_pts += int(point)
         if point < 9:
@@ -316,7 +316,7 @@ def check_rubric(text):
         if point < config.THRESHOLD * 10:
             print("Test and Measures section points fell below threshold.")
             print("Assessment: Unskilled")
-            sys.exit(0)
+            # sys.exit(0)
         reason = split_parts[1].strip().replace('*', '')  # Remove leading/trailing spaces
         total_pts += int(point)
         if point < 20:
