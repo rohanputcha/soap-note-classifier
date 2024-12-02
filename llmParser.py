@@ -144,7 +144,6 @@ def check_rubric(text):
     else:
         print("Error processing Evaluation and PT Diagnosis section.")
 
-    # TODO: TEST AND MEASURES
     
     # PROGNOSIS (10 points)
     response = chat.send_message("Rubric item: Prognosis, 10 points in total." +
@@ -264,6 +263,39 @@ def check_rubric(text):
         print(f"Reason for deduction: {reason}")
     else:
         print("Error processing Authentication and Billing section.")
+
+    
+    # TEST AND MEASURES (20 points)
+    response = chat.send_message("Rubric item: Test and Measures, 20 points. For each performed outcome measure only, assess how good it is documented. The total point is 20, give me the final point. Measure list: " +
+        "- Aerobic Capacity; - Anthropometric Characteristics; - Assistive Technology; " +
+        "- Balance; - Circulation; - Community, Social, and Civic Life; - Cranial and Peripheral Nerve Integrity; " +
+        "- Education; - Life Environmental Factors; - Gait (Quality, assistance, devices, distance); " +
+        "- Integumentary Integrity; - Joint Integrity and Mobility; - Mental Functions; " +
+        "- Mobility (Including Locomotion); - Motor Function; - Muscle Performance; Neuromotor Development and Sensory; " +
+        "- Processing; - Pain (Intensity, location, pattern, descriptions, and aggravating or relieving factors); " +
+        "- Posture; - Range of Motion; - Reflex Integrity; - Self-Care and Domestic Life; " +
+        "- Sensory Integrity; - Skeletal Integrity; - Special tests")
+    print(response.text)
+    split_parts = re.split(r", |\. ", response.text, maxsplit=1)
+    if len(split_parts) == 2:
+        # Check if the point is a fraction
+        point_str = split_parts[0].strip()
+        if "/" in point_str:  # Handle fractional points
+            numerator, denominator = map(int, point_str.split("/"))
+            point = numerator
+        else:
+            point = int(point_str)  # Handle whole numbers
+            
+        print(f"Test and Measures section points: {point}")
+        if point < config.THRESHOLD * 10:
+            print("Test and Measures section points fell below threshold.")
+            print("Assessment: Unskilled")
+            sys.exit(0)
+        reason = split_parts[1].strip()  # Remove leading/trailing spaces
+        total_pts += int(point)
+        print(f"Reason for deduction: {reason}")
+    else:
+        print("Error processing Test and Measures section.")
 
 
     print("Completed rubric checking. Total point is: " + str(total_pts))
