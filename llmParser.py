@@ -52,6 +52,8 @@ def check_rubric(text):
         print(f"Reason for deduction: {reason}")
     else:
         print("Error processing Demographic section.")
+
+
     # HISTORY (10 points)
     response = chat.send_message("Rubric item: history, 10 points in total. - Past Medical and Surgical history: 1 point" +  
         "- Social history/Home set-up (e.g., Alcohol and Tobacco use, cultural concerns, hobbies): 1 point  " +  
@@ -74,7 +76,7 @@ def check_rubric(text):
             
         print(f"History section points: {point}")
         if point < config.THRESHOLD * 10:
-            print("Demographic section points fell below threshold.")
+            print("History section points fell below threshold.")
             print("Assessment: Unskilled")
             sys.exit(0)
         reason = split_parts[1].strip()  # Remove leading/trailing spaces
@@ -82,6 +84,187 @@ def check_rubric(text):
         print(f"Reason for deduction: {reason}")
     else:
         print("Error processing History section.")
+
+    
+    # SYSTEMS REVIEW (10 points)
+    response = chat.send_message("Rubric item: system review, 10 points in total." +
+        "- Cardiopulmonary: Vitals, Edema: 2 points" + 
+        "- Integumentary: Color, Integrity: 2 points" +
+        "- Musculoskeletal: Gross ROM, Strength, Posture, Height, Weight, BMI: 2 points" +
+        "- Neuromuscular: Gross mobility, Gross movement, Gross sensation: 2 points" +
+        "- Communication: Ability, Affect, Cognition, Language, Learning style: 2 points")
+    # print(response.text)
+    split_parts = re.split(r", |\. ", response.text, maxsplit=1)
+    if len(split_parts) == 2:
+        # Check if the point is a fraction
+        point_str = split_parts[0].strip()
+        if "/" in point_str:  # Handle fractional points
+            numerator, denominator = map(int, point_str.split("/"))
+            point = numerator
+        else:
+            point = int(point_str)  # Handle whole numbers
+            
+        print(f"System Review section points: {point}")
+        if point < config.THRESHOLD * 10:
+            print("System Review section points fell below threshold.")
+            print("Assessment: Unskilled")
+            sys.exit(0)
+        reason = split_parts[1].strip()  # Remove leading/trailing spaces
+        total_pts += int(point)
+        print(f"Reason for deduction: {reason}")
+    else:
+        print("Error processing System Review section.")
+
+
+    # EVALUATION and PT DIAGNOSIS (10 points)
+    response = chat.send_message("Rubric item: Evaluation and PT Diagnosis, 10 points in total." +
+        "- Impairments: 2 points" + 
+        "- Activity limitations: 2 points" + 
+        "- Movement System Diagnoses and/or Cardiopulmonary Diagnosis: 2 points" + 
+        "- ICD-10 codes: 2 points")
+    # print(response.text)
+    split_parts = re.split(r", |\. ", response.text, maxsplit=1)
+    if len(split_parts) == 2:
+        # Check if the point is a fraction
+        point_str = split_parts[0].strip()
+        if "/" in point_str:  # Handle fractional points
+            numerator, denominator = map(int, point_str.split("/"))
+            point = numerator
+        else:
+            point = int(point_str)  # Handle whole numbers
+            
+        print(f"Evaluation and PT Diagnosis section points: {point}")
+        if point < config.THRESHOLD * 10:
+            print("Evaluation and PT Diagnosis section points fell below threshold.")
+            print("Assessment: Unskilled")
+            sys.exit(0)
+        reason = split_parts[1].strip()  # Remove leading/trailing spaces
+        total_pts += int(point)
+        print(f"Reason for deduction: {reason}")
+    else:
+        print("Error processing Evaluation and PT Diagnosis section.")
+
+    # TODO: TEST AND MEASURES
+    
+    # PROGNOSIS (10 points)
+    response = chat.send_message("Rubric item: Prognosis, 10 points in total." +
+        "- Functional outcome expectations and timeframe: 5 points" + 
+        "- Key factors impacting outcomes: 2 points" + 
+        "- Risks, precautions, and/or safety concerns: 3 points")
+    # print(response.text)
+    split_parts = re.split(r", |\. ", response.text, maxsplit=1)
+    if len(split_parts) == 2:
+        # Check if the point is a fraction
+        point_str = split_parts[0].strip()
+        if "/" in point_str:  # Handle fractional points
+            numerator, denominator = map(int, point_str.split("/"))
+            point = numerator
+        else:
+            point = int(point_str)  # Handle whole numbers
+            
+        print(f"Prognosis section points: {point}")
+        if point < config.THRESHOLD * 10:
+            print("Prognosis section points fell below threshold.")
+            print("Assessment: Unskilled")
+            sys.exit(0)
+        reason = split_parts[1].strip()  # Remove leading/trailing spaces
+        total_pts += int(point)
+        print(f"Reason for deduction: {reason}")
+    else:
+        print("Error processing Prognosis section.")
+
+    # GOALS (12 points)
+    response = chat.send_message("Rubric item: Goals, 12 points in total." +
+        "- Specific: 3 points" +
+        "- Measurable: 3 points" +
+        "- Achievable: 2 points" +
+        "- Relevant: 2 points" +
+        "- Time-bound: 2 points")
+    # print(response.text)
+    split_parts = re.split(r", |\. ", response.text, maxsplit=1)
+    if len(split_parts) == 2:
+        # Check if the point is a fraction
+        point_str = split_parts[0].strip()
+        if "/" in point_str:  # Handle fractional points
+            numerator, denominator = map(int, point_str.split("/"))
+            point = numerator
+        else:
+            point = int(point_str)  # Handle whole numbers
+            
+        print(f"Goals section points: {point}")
+        if point < config.THRESHOLD * 10:
+            print("Goals section points fell below threshold.")
+            print("Assessment: Unskilled")
+            sys.exit(0)
+        reason = split_parts[1].strip()  # Remove leading/trailing spaces
+        total_pts += int(point)
+        print(f"Reason for deduction: {reason}")
+    else:
+        print("Error processing Goals section.")
+
+    
+    # PLAN OF CARE (15 points)
+    response = chat.send_message("Rubric item: Plan of Care, 15 points in total." +
+        "- Specific interventions to be used: 5 points" +
+        "- Patient/caregiver education: 2 points" +
+        "- Delegation: 2 points" +
+        "- Proposed duration: 2 points" +
+        "- Proposed frequency: 2 points" +
+        "- Anticipated transition of care plans: 2 points")
+    # print(response.text)
+    split_parts = re.split(r", |\. ", response.text, maxsplit=1)
+    if len(split_parts) == 2:
+        # Check if the point is a fraction
+        point_str = split_parts[0].strip()
+        if "/" in point_str:  # Handle fractional points
+            numerator, denominator = map(int, point_str.split("/"))
+            point = numerator
+        else:
+            point = int(point_str)  # Handle whole numbers
+            
+        print(f"Plan of Care section points: {point}")
+        if point < config.THRESHOLD * 10:
+            print("Plan of Care section points fell below threshold.")
+            print("Assessment: Unskilled")
+            sys.exit(0)
+        reason = split_parts[1].strip()  # Remove leading/trailing spaces
+        total_pts += int(point)
+        print(f"Reason for deduction: {reason}")
+    else:
+        print("Error processing Plan of Care section.")
+
+    
+    # AUTHENTICATION and BILLING (9 points)
+    response = chat.send_message("Rubric item: Authentication and Billing, 9 points in total." +
+        "- Signature: 1 point" +
+        "- Title: 1 point" +
+        "- Treatment provided today: 2 points" +
+        "- Charges (CPT codes) for today: 1 point" +
+        "- G-Codes and modifiers (if applicable): 1 point" +
+        "- Spelling/proper use of abbreviations: 2 points" +
+        "- Date/time: 1 point")
+    # print(response.text)
+    split_parts = re.split(r", |\. ", response.text, maxsplit=1)
+    if len(split_parts) == 2:
+        # Check if the point is a fraction
+        point_str = split_parts[0].strip()
+        if "/" in point_str:  # Handle fractional points
+            numerator, denominator = map(int, point_str.split("/"))
+            point = numerator
+        else:
+            point = int(point_str)  # Handle whole numbers
+            
+        print(f"Authentication and Billing section points: {point}")
+        if point < config.THRESHOLD * 10:
+            print("Authentication and Billing section points fell below threshold.")
+            print("Assessment: Unskilled")
+            sys.exit(0)
+        reason = split_parts[1].strip()  # Remove leading/trailing spaces
+        total_pts += int(point)
+        print(f"Reason for deduction: {reason}")
+    else:
+        print("Error processing Authentication and Billing section.")
+
 
     print("Completed rubric checking.")
 
