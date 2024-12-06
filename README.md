@@ -5,7 +5,7 @@
 
 ```API_KEY="<YOUR OWN API KEY>"```
 
-Replace <YOUR API KEY> with the actual Gemini API key
+Replace <YOUR API KEY> with the actual Gemini API key, apply for an API key [here](https://aistudio.google.com/app/apikey?_gl=1*m17snc*_ga*MjEwNTM2MjEzNS4xNzMyMTIzNjc4*_ga_P1DBVKWT6V*MTczMzUwMDcyNy4yLjAuMTczMzUwMDcyNy42MC4wLjI4MzcwMzQw)
 
 ```SOAP_NOTE_PATH="<PATH TO SOAP NOTE>"```
 
